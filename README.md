@@ -11,7 +11,6 @@ Training flow and programs structure are based on [ClovaAI's four-stage STR fram
 #### Transformation
 - SPIN: {name: spin, k:...}
 - TPS: {name: tps, num_fiducial:...}
-- SPIN w TPS: Coming soon
 
 #### Feature Extraction
 - VGG: vgg11, vgg16, vgg19.
