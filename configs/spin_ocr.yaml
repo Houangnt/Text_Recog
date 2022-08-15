@@ -1,0 +1,36 @@
+model:
+  nc: 3
+  n_features: 512
+  hidden_size: 256
+  transformation:
+    name: spin
+    k: 6
+  feature_extraction:
+    name: vgg11
+  sequence_modeling:
+    name: None
+  prediction:
+    name: attn
+
+train:
+  lr: 1.0
+  grad_clip: 5.0
+
+  # Adadelta optimizer
+  optimizer: adadelta
+  rho: 0.95
+  eps: 0.00000001
+
+  # # Adam optimizer
+  # optimizer: adam
+  # beta1: 0.9
+  # eps: 0.00000001
+
+device: cuda
+batch_max_length: 9
+character: abcdefghklmnpstuvxyrz0123456789
+imgH: 32
+imgW: 100
+rgb: True
+sensitive: False
+pad: False
