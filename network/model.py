@@ -15,13 +15,17 @@ class Model(nn.Module):
 
         self.transformation = getattr(trans, model_opt.transformation.name, none_module)(model_opt)
         self.feature_extraction = getattr(fe, model_opt.feature_extraction.name)(model_opt)
-        self.sequence_modeling = getattr(sm, model_opt.sequence_modeling.name, none_module)(model_opt)
+        if model_opt.sequence_modeling.name == "None": 
+            self.sequence_modeling = None 
+        else: 
+            self.sequence_modeling = getattr(sm, model_opt.sequence_modeling.name, none_module)(model_opt)
         self.prediction = getattr(prd, model_opt.prediction.name)(model_opt)
 
     def forward(self, x, prediction=True, **kwargs):
         out = self.transformation(x)
         out = self.feature_extraction(out)
-        out = self.sequence_modeling(out, **kwargs)
+        if self.sequence_modeling is not None: 
+            out = self.sequence_modeling(out, **kwargs)
         if prediction:
             out = self.prediction(out, batch_max_length=self.opt.batch_max_length, **kwargs)
         return out

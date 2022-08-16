@@ -57,7 +57,7 @@ def training(opt, loss_compute, model, image, text, length, batch_size):
         if 'ctc' in opt.model.prediction.name:
             preds = model(image)
         else:  # 'attn' in opt.model.prediction.name:
-            preds = model(image, text=text[:, :-1], is_train=True)  # align with Attention.forward
+            preds = model(image, prediction = True, text=text[:, :-1], is_train=True)  # align with Attention.forward
         train_loss = loss_compute(preds, text, batch_size, length)
 
     return train_loss
