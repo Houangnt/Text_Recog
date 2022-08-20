@@ -167,4 +167,9 @@ class GridGenerator(nn.Module):
 
 
 def tps(opt):
-    return TPS_SpatialTransformerNetwork(opt.F, opt.i_size, opt.i_r_size, opt.i_channel_num, opt.device)
+    F = opt.transformation.num_fiducial 
+    I_size = (opt.imgH, opt.imgW)
+    I_r_size = (opt.imgH, opt.imgW)
+    I_channel_num = opt.nc
+    return TPS_SpatialTransformerNetwork(F, I_size, I_r_size, I_channel_num, opt.device)
+    # return TPS_SpatialTransformerNetwork(opt.F, opt.i_size, opt.i_r_size, opt.i_channel_num, opt.device)
