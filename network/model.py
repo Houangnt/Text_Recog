@@ -57,7 +57,6 @@ def validated_config(opt):
     assert model_opt.prediction.name.lower() in prd.list_modules, \
         'prediction module is not supported <{}>'.format(model_opt.prediction.name)
     model_opt.device = opt.device
-    model_opt.device = opt.device
     model_opt.imgH = opt.imgH 
     model_opt.imgW = opt.imgW
     return model_opt
