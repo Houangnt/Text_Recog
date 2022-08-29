@@ -25,4 +25,5 @@ def load_config(yaml_path):
     config_dict = read_yaml(yaml_path)
     config_dict['device'] = torch.device(config_dict.get('device', 'cpu'))
     config_dict['model']['device'] = config_dict['device']
+    config_dict['model']['img_size'] = config_dict['imgH'], config_dict['imgW']
     return Config(config_dict)
