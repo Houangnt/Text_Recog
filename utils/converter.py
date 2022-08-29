@@ -81,7 +81,7 @@ class CTCLabelConverterForBaiduWarpctc(object):
         text = ''.join(text)
         text = [self.dict[char] for char in text]
 
-        return (torch.IntTensor(text), torch.IntTensor(length))
+        return torch.IntTensor(text), torch.IntTensor(length)
 
     def decode(self, text_index, length):
         """ convert text-index into text-label. """
@@ -208,11 +208,13 @@ class TransformerConverter(object):
             ltr = torch.tensor([0] + token_ids + [2] + [1] * (batch_max_length - len(text.rstrip())), dtype=torch.int32)
             rtl = torch.tensor([0] + reversed_tokes + [2] + [1] * (batch_max_length - len(text.rstrip())),
                                dtype=torch.int32)
-            ltr_y = self.one_hot_targets(ltr, batch_max_length)
-            rtl_y = self.one_hot_targets(rtl, batch_max_length)
+            ltr_y = self.one_hot_targets(ltr, batch_max_length)[1:]
+            rtl_y = self.one_hot_targets(rtl, batch_max_length)[1:]
             target_y = torch.from_numpy(np.concatenate((ltr_y, rtl_y), 0))
-            targets_embedding_mask = self._make_std_mask(ltr, 1).to(self.device)
             mask = self.make_mask(ltr, batch_max_length)
+            ltr = ltr[:-1]
+            rtl = rtl[:-1]
+            targets_embedding_mask = self._make_std_mask(ltr, 1).to(self.device)
 
             mask_batch = mask.unsqueeze(0) if mask_batch is None else torch.cat((mask_batch, mask.unsqueeze(0)))
             ltr_batch = ltr.unsqueeze(0) if ltr_batch is None else torch.cat((ltr_batch, ltr.unsqueeze(0)))
@@ -252,8 +254,7 @@ class TransformerConverter(object):
 
         mask = np.ones((batch_max_length + 2, len(self.dict)))
         mask[np.where(target == 1), :] = 0
-        # return torch.from_numpy(mask[:-1, :])
-        return torch.from_numpy(mask)
+        return torch.from_numpy(mask[:-1, :])
 
     def _make_std_mask(self, target, pad_id):
         """
