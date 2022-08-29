@@ -5,6 +5,8 @@ model:
   transformation:
     name: tps
     num_fiducial: 20
+    i_r_size_H: 32
+    i_r_size_W: 100
   feature_extraction:
     name: vgg11
   sequence_modeling:
